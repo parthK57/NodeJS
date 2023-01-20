@@ -24,5 +24,3 @@ app.use(errorRoute);
 const server = http.createServer(app);
 
 server.listen(3000);
-
-//    module.exports = path.dirname(require.main.filename);
