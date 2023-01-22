@@ -9,20 +9,6 @@ function submit(e) {
   const email = document.getElementById("email").value;
   const phonenumber = document.getElementById("phonenumber").value.toString();
 
-  //   axios({
-  //     method: "post",
-  //     url: "https://crudcrud.com/api/3a928e06e3dd41daa9be45223aea5d97/appointmentData",
-  //     data: {
-  //       name: name,
-  //       email: email,
-  //       phonenumber: phonenumber,
-  //     },
-  //   })
-  //     .then((res) => {
-  //       display(res);
-  //     })
-  //     .catch((err) => console.log(err));
-
   const postUser = async () => {
     try {
       const res = await axios.post("http://localhost:3000/postuser", {
@@ -169,21 +155,6 @@ function display(res) {
       const email = document.getElementById("modalEmail").value;
       const phonenumber = document.getElementById("modalphonenumber").value;
 
-      //   axios({
-      //     method: "put",
-      //     url: `https://crudcrud.com/api/3a928e06e3dd41daa9be45223aea5d97/appointmentData/${id}`,
-      //     data: {
-      //       name: `${name}`,
-      //       email: `${email}`,
-      //       phonenumber: `${phonenumber}`,
-      //     },
-      //   })
-      //     .then(() => {
-      //       updateDisplay(name, email, phonenumber, id);
-      //       card.remove();
-      //     })
-      //     .catch((err) => console.log(err));
-
       const editUser = async () => {
         try {
           const res = await axios.patch("http://localhost:3000/patchuser", {
@@ -192,7 +163,12 @@ function display(res) {
             email: email,
             phonenumber: phonenumber,
           });
-          updateDisplay(res.data[0].username, res.data[0].email, res.data[0].phonenumber, res.data[0].id);
+          updateDisplay(
+            res.data[0].username,
+            res.data[0].email,
+            res.data[0].phonenumber,
+            res.data[0].id
+          );
           card.remove();
         } catch (error) {
           console.log(error);
@@ -205,28 +181,17 @@ function display(res) {
   // setting up functionality for delete
   deleteButton.addEventListener("click", deleteF);
   function deleteF() {
-    // axios({
-    //   method: "delete",
-    //   url: `https://crudcrud.com/api/3a928e06e3dd41daa9be45223aea5d97/appointmentData/${id}`,
-    // }).then(() => {
-    //   card.remove();
-    // });
-
     const deleteUser = async () => {
       try {
-        const res = await axios({
-          method: "get",
-          url: "http://localhost:3000/deleteuser",
-          data: {
-            id: id,
-          },
+        const res = await axios.post("http://localhost:3000/deleteuser", {
+          id: id,
         });
-        console.log(res);
       } catch (error) {
         console.log(error);
       }
     };
     deleteUser();
+    card.remove();
   }
 }
 
@@ -356,61 +321,55 @@ function updateDisplay(name, email, phonenumber, id) {
       const email = document.getElementById("modalEmail").value;
       const phonenumber = document.getElementById("modalphonenumber").value;
 
-      //   axios({
-      //     method: "put",
-      //     url: `https://crudcrud.com/api/3a928e06e3dd41daa9be45223aea5d97/appointmentData/${id}`,
-      //     data: {
-      //       name: `${name}`,
-      //       email: `${email}`,
-      //       phonenumber: `${phonenumber}`,
-      //     },
-      //   })
-      //     .then(() => {
-      //       card.remove();
-      //       updateDisplay(name, email, phonenumber, id);
-      //     })
-      //     .catch((err) => console.log(err));
+      const editUser = async () => {
+        try {
+          const res = await axios.patch("http://localhost:3000/patchuser", {
+            id: id,
+            username: name,
+            email: email,
+            phonenumber: phonenumber,
+          });
+          updateDisplay(
+            res.data[0].username,
+            res.data[0].email,
+            res.data[0].phonenumber,
+            res.data[0].id
+          );
+          card.remove();
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      editUser();
     }
   }
 
   // deleting stuff
   deleteButton.addEventListener("click", deleteF);
   function deleteF() {
-    // axios({
-    //   method: "delete",
-    //   url: `https://crudcrud.com/api/3a928e06e3dd41daa9be45223aea5d97/appointmentData/${id}`,
-    // }).then(() => {
-    //   card.remove();
-    // });
     const deleteUser = async () => {
       try {
-        const res = await axios({
-          method: "get",
-          url: "http://localhost:3000/deleteuser",
-          data: {
-            id: id,
-          },
+        const res = await axios.post("http://localhost:3000/deleteuser", {
+          id: id,
         });
       } catch (error) {
         console.log(error);
       }
     };
     deleteUser();
+    card.remove();
   }
 }
 
 // // getting preloaded data
-function run() {
-  console.log("first");
-  //   axios({
-  //     method: "get",
-  //     url: "https://crudcrud.com/api/3a928e06e3dd41daa9be45223aea5d97/appointmentData",
-  //   })
-  //     .then((res) => {
-  //       //   console.log(res.data);
-  //       preLoadData(res);
-  //     })
-  //     .catch((err) => console.log(err));
+async function run() {
+  try {
+    const res = await axios.get("http://localhost:3000/allusers");
+    preLoadData(res);
+    // console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
 }
 run();
 
@@ -418,10 +377,10 @@ function preLoadData(res) {
   const rawData = res.data;
   for (let i = 0; i < rawData.length; i++) {
     updateDisplay(
-      rawData[i].name,
+      rawData[i].username,
       rawData[i].email,
       rawData[i].phonenumber,
-      rawData[i]._id
+      rawData[i].id
     );
   }
 }

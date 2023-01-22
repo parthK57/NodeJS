@@ -9,11 +9,13 @@ app.use(cors());
 const postUserRoute = require("./routes/post-user");
 const patchUserRoute = require("./routes/patch-user");
 const deleteUserRoute = require("./routes/delete-user");
+const allUserRoute = require("./routes/all-user.js");
 
 app.use(bodyParser.json({ extended: false }));
 
 app.use(postUserRoute);
 app.use(patchUserRoute);
 app.use(deleteUserRoute);
+app.use(allUserRoute);
 
 app.listen(3000, () => console.log("server live at -> http://localhost:3000"));

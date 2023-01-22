@@ -55,16 +55,27 @@ exports.patchUserHandler = async (req, res, next) => {
 
 exports.deleteUserHandler = async (req, res, next) => {
   try {
-    const id = req.body.id;
-    console.log(id);
-    // await db.execute(
-    //   "DELETE FROM sharpenertech.users WHERE id = ?",
-    //   [id],
-    //   (err, results) => {
-    //     res.status(200);
-    //   }
-    // );
+    const idRaw = req.body.id;
+    const id = parseInt(idRaw);
+    await db.execute(
+      "DELETE FROM sharpenertech.users WHERE id = ?",
+      [id],
+      (err, results) => {
+        console.log(err);
+        res.status(results);
+      }
+    );
   } catch (error) {
     console.log(error);
   }
 };
+
+exports.allUserHandler = async (req, res, next) => {
+  try {
+    await db.execute("SELECT * FROM sharpenertech.users", (err, results) => {
+      res.send(results);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}

@@ -5,6 +5,6 @@ const router = express.Router();
 // CONTROLLERS
 const user = require("../controller/user");
 
-router.post("/deleteuser", user.deleteUserHandler);
+router.use("/allusers", user.allUserHandler);
 
 module.exports = router;
